@@ -30,7 +30,7 @@ app.post("/create", (req, res) => {
       if (err) {
         console.log(err);
       } else {
-        res.send("Emplyee Added");
+        res.send("Employee Added");
       }
     }
   );
@@ -38,7 +38,15 @@ app.post("/create", (req, res) => {
 // ===============
 //All Todo List fecth
 app.get("/all", (req, res) => {
-  db.query("SELECT * FROM employee", (err, result) => {
+  const isOpen = req.query.open;
+  const isSearch = req.query.search;
+  const isSelect = req.query.select;
+  // if (isSelect === "Salary") parent(isSearch);
+  const sql = `SELECT * FROM employee where ${isSelect}="${isSearch}"`;
+  const isQuery = isOpen == "false" ? "SELECT * FROM employee" : sql;
+  console.log(isOpen, isQuery);
+  console.log(req.query);
+  db.query(isQuery, (err, result) => {
     if (err) {
       console.log(err);
     } else {
